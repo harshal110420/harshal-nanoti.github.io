@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Theme System - Project Case Study</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #ff6b35; --secondary: #004e89; --accent: #f7b801;
+            --dark: #0a0e27; --darker: #050716; --light: #f5f5f5;
+            --gray: #8892b0; --success: #4caf50;
+        }
+        body { font-family: "Syne", sans-serif; background: var(--darker); color: var(--light); overflow-x: hidden; line-height: 1.6; }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
+        .bg-grid {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(255, 107, 53, 0.1) 1px, transparent 1px),
+                        linear-gradient(rgba(255, 107, 53, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px; animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: float 20s ease-in-out infinite; }
+        .orb-1 { width: 400px; height: 400px; background: var(--primary); top: 10%; left: 10%; }
+        .orb-2 { width: 300px; height: 300px; background: var(--secondary); bottom: 20%; right: 10%; animation-delay: 5s; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(100px, -50px) scale(1.1); } 66% { transform: translate(-50px, 100px) scale(0.9); } }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+        nav { padding: 2rem 0; display: flex; justify-content: space-between; align-items: center; animation: slideDown 0.8s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: -1px; text-decoration: none; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem; color: var(--gray); text-decoration: none;
+            font-weight: 600; transition: all 0.3s; padding: 0.7rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;
+        }
+        .back-btn:hover { color: var(--primary); border-color: var(--primary); transform: translateX(-5px); }
+        .project-hero { padding: 4rem 0 6rem; text-align: center; animation: fadeInUp 1s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .project-status {
+            display: inline-block; padding: 0.5rem 1rem; background: rgba(76, 175, 80, 0.2);
+            color: var(--success); border: 1px solid var(--success); border-radius: 30px;
+            font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem;
+        }
+        .project-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; margin-bottom: 1.5rem; letter-spacing: -2px; }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .project-hero p { font-size: 1.2rem; color: var(--gray); max-width: 800px; margin: 0 auto 2rem; line-height: 1.8; }
+        .tech-stack { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
+        .tech-tag {
+            padding: 0.6rem 1.2rem; background: rgba(255, 107, 53, 0.1); color: var(--primary);
+            border: 1px solid var(--primary); border-radius: 8px; font-size: 0.95rem;
+            font-family: "JetBrains Mono", monospace; font-weight: 500;
+        }
+        .project-stats-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 4rem 0; }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; padding: 2rem; text-align: center; transition: all 0.3s;
+        }
+        .stat-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .stat-value {
+            font-size: 3rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.5rem;
+        }
+        .stat-label { color: var(--gray); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .content-section { padding: 4rem 0; }
+        .section-title { font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 2rem; letter-spacing: -1px; }
+        .section-title span { color: var(--primary); }
+        .content-text { color: var(--gray); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0; }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; padding: 2rem; transition: all 0.3s;
+        }
+        .feature-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .feature-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--light); }
+        .feature-card p { color: var(--gray); line-height: 1.6; }
+        .theme-showcase {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem; margin: 3rem 0;
+        }
+        .theme-preview {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.3s;
+            cursor: pointer;
+        }
+        .theme-preview:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .theme-colors {
+            display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1rem;
+        }
+        .theme-color {
+            width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .theme-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .theme-description { font-size: 0.9rem; color: var(--gray); }
+        .btn {
+            padding: 1rem 2rem; border: none; border-radius: 8px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+            text-decoration: none; display: inline-block; font-family: "Syne", sans-serif;
+        }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4); }
+        .cta-section { text-align: center; padding: 4rem 0; }
+        footer { padding: 3rem 0; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); color: var(--gray); }
+        @media (max-width: 768px) { .features-grid, .theme-showcase, .project-stats-section { grid-template-columns: 1fr; } }
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--darker); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"><div class="bg-grid"></div><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+    <nav class="container">
+        <a href="index.html" class="logo">&lt;DevLab/&gt;</a>
+        <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+    </nav>
+
+    <section class="project-hero container">
+        <span class="project-status">● Fully Implemented</span>
+        <h1>Dynamic <span class="gradient-text">Theme System</span></h1>
+        <p>
+            Advanced theming architecture for the Talent Gate platform enabling real-time dashboard 
+            customization. Features include 12+ preset themes, custom color picker, persistent user 
+            preferences, and instant theme switching without page reload.
+        </p>
+        <div class="tech-stack">
+            <span class="tech-tag">React Context API</span>
+            <span class="tech-tag">CSS Custom Properties</span>
+            <span class="tech-tag">LocalStorage</span>
+            <span class="tech-tag">React Hooks</span>
+        </div>
+        <div class="project-stats-section">
+            <div class="stat-card"><div class="stat-value">12+</div><div class="stat-label">Preset Themes</div></div>
+            <div class="stat-card"><div class="stat-value">0ms</div><div class="stat-label">Switch Time</div></div>
+            <div class="stat-card"><div class="stat-value">∞</div><div class="stat-label">Custom Colors</div></div>
+            <div class="stat-card"><div class="stat-value">100%</div><div class="stat-label">Persistent</div></div>
+        </div>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>System</span> Overview</h2>
+        <p class="content-text">
+            The Dynamic Theme System was developed to address user demand for personalization in the 
+            Talent Gate recruitment platform. It provides a seamless way for users to customize their 
+            dashboard appearance according to their preferences, improving user satisfaction and engagement.
+        </p>
+        <p class="content-text">
+            Built using React Context API and CSS custom properties, the system allows instant theme 
+            changes that persist across sessions. Users can choose from preset themes or create fully 
+            custom color schemes using an integrated color picker.
+        </p>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>Available</span> Themes</h2>
+        <div class="theme-showcase">
+            <div class="theme-preview">
+                <div class="theme-colors">
+                    <div class="theme-color" style="background: #ff6b35;"></div>
+                    <div class="theme-color" style="background: #004e89;"></div>
+                    <div class="theme-color" style="background: #f7b801;"></div>
+                </div>
+                <div class="theme-name">Default</div>
+                <div class="theme-description">Vibrant orange and blue</div>
+            </div>
+            <div class="theme-preview">
+                <div class="theme-colors">
+                    <div class="theme-color" style="background: #6366f1;"></div>
+                    <div class="theme-color" style="background: #8b5cf6;"></div>
+                    <div class="theme-color" style="background: #d946ef;"></div>
+                </div>
+                <div class="theme-name">Purple Haze</div>
+                <div class="theme-description">Modern purple gradient</div>
+            </div>
+            <div class="theme-preview">
+                <div class="theme-colors">
+                    <div class="theme-color" style="background: #10b981;"></div>
+                    <div class="theme-color" style="background: #059669;"></div>
+                    <div class="theme-color" style="background: #047857;"></div>
+                </div>
+                <div class="theme-name">Forest Green</div>
+                <div class="theme-description">Calm emerald tones</div>
+            </div>
+            <div class="theme-preview">
+                <div class="theme-colors">
+                    <div class="theme-color" style="background: #f43f5e;"></div>
+                    <div class="theme-color" style="background: #ec4899;"></div>
+                    <div class="theme-color" style="background: #d946ef;"></div>
+                </div>
+                <div class="theme-name">Ruby Rose</div>
+                <div class="theme-description">Elegant pink and red</div>
+            </div>
+            <div class="theme-preview">
+                <div class="theme-colors">
+                    <div class="theme-color" style="background: #0ea5e9;"></div>
+                    <div class="theme-color" style="background: #06b6d4;"></div>
+                    <div class="theme-color" style="background: #14b8a6;"></div>
+                </div>
+                <div class="theme-name">Ocean Blue</div>
+                <div class="theme-description">Cool cyan palette</div>
+            </div>
+            <div class="theme-preview">
+                <div class="theme-colors">
+                    <div class="theme-color" style="background: #f59e0b;"></div>
+                    <div class="theme-color" style="background: #f97316;"></div>
+                    <div class="theme-color" style="background: #ef4444;"></div>
+                </div>
+                <div class="theme-name">Sunset</div>
+                <div class="theme-description">Warm orange to red</div>
+            </div>
+        </div>
+        <p class="content-text" style="text-align: center;">
+            + 6 more themes and unlimited custom color combinations!
+        </p>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>Key</span> Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Instant Switching</h3>
+                <p>Zero-delay theme changes using CSS custom properties. No page reload required, themes apply immediately across all components.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3>Persistent Preferences</h3>
+                <p>User theme choices saved in localStorage, automatically restored on next visit. Preferences sync across browser tabs.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Custom Colors</h3>
+                <p>Built-in color picker allowing users to create unlimited custom themes. Supports all color formats and provides live preview.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Dynamic Updates</h3>
+                <p>React Context ensures all components re-render with new theme values. Smooth transitions between theme changes.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Responsive Design</h3>
+                <p>Theme system works seamlessly across all device sizes. Mobile-optimized theme picker interface.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Type Safe</h3>
+                <p>Full TypeScript support with type definitions for all theme properties. Prevents invalid theme configurations.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>Technical</span> Implementation</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Context API Architecture</h3>
+                <p>
+                    ThemeContext provides theme state and switching functions throughout the app. 
+                    useTheme hook gives components easy access to current theme and change methods.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h3>CSS Custom Properties</h3>
+                <p>
+                    Leverages native CSS variables for theme colors. JavaScript dynamically updates 
+                    document root properties, allowing instant visual changes without CSS recalculation.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h3>LocalStorage Integration</h3>
+                <p>
+                    Theme preferences serialized to JSON and stored in localStorage. useEffect hook 
+                    handles persistence logic, syncing state with storage on every theme change.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h3>Performance Optimization</h3>
+                <p>
+                    Minimal re-renders through careful Context splitting. Theme changes only trigger 
+                    updates for components consuming theme values, not entire component tree.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section container">
+        <h2 class="section-title">Enhance Your <span>User Experience</span></h2>
+        <p class="content-text" style="text-align: center; max-width: 600px; margin: 0 auto 2rem;">
+            Want to implement a similar theming system in your application? Let's discuss how customization 
+            can improve user satisfaction in your project.
+        </p>
+        <a href="index.html#contact" class="btn btn-primary">Let's Talk</a>
+    </section>
+
+    <footer class="container">
+        <p>&copy; 2025 Full Stack Developer Portfolio. Built with passion and code.</p>
+    </footer>
+</body>
+</html>

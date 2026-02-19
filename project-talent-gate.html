@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Talent Gate - Project Case Study</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #ff6b35;
+        --secondary: #004e89;
+        --accent: #f7b801;
+        --dark: #0a0e27;
+        --darker: #050716;
+        --light: #f5f5f5;
+        --gray: #8892b0;
+        --success: #4caf50;
+      }
+
+      body {
+        font-family: "Syne", sans-serif;
+        background: var(--darker);
+        color: var(--light);
+        overflow-x: hidden;
+        line-height: 1.6;
+      }
+
+      /* Animated Background */
+      .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.15;
+      }
+
+      .bg-grid {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background:
+          linear-gradient(90deg, rgba(255, 107, 53, 0.1) 1px, transparent 1px),
+          linear-gradient(rgba(255, 107, 53, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: gridMove 20s linear infinite;
+      }
+
+      @keyframes gridMove {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(50px, 50px);
+        }
+      }
+
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.6;
+        animation: float 20s ease-in-out infinite;
+      }
+
+      .orb-1 {
+        width: 400px;
+        height: 400px;
+        background: var(--primary);
+        top: 10%;
+        left: 10%;
+      }
+      .orb-2 {
+        width: 300px;
+        height: 300px;
+        background: var(--secondary);
+        bottom: 20%;
+        right: 10%;
+        animation-delay: 5s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        33% {
+          transform: translate(100px, -50px) scale(1.1);
+        }
+        66% {
+          transform: translate(-50px, 100px) scale(0.9);
+        }
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Navigation */
+      nav {
+        padding: 2rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        animation: slideDown 0.8s ease-out;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--primary);
+        letter-spacing: -1px;
+        text-decoration: none;
+      }
+
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--gray);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+        padding: 0.7rem 1.2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+      }
+
+      .back-btn:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+        transform: translateX(-5px);
+      }
+
+      /* Hero */
+      .project-hero {
+        padding: 4rem 0 6rem;
+        text-align: center;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .project-status {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: rgba(76, 175, 80, 0.2);
+        color: var(--success);
+        border: 1px solid var(--success);
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+      }
+
+      .project-hero h1 {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        letter-spacing: -2px;
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .project-hero p {
+        font-size: 1.2rem;
+        color: var(--gray);
+        max-width: 800px;
+        margin: 0 auto 2rem;
+        line-height: 1.8;
+      }
+
+      .tech-stack {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 3rem;
+      }
+
+      .tech-tag {
+        padding: 0.6rem 1.2rem;
+        background: rgba(255, 107, 53, 0.1);
+        color: var(--primary);
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+      }
+
+      /* Project Stats */
+      .project-stats-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin: 4rem 0;
+      }
+
+      .stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s;
+      }
+
+      .stat-card:hover {
+        border-color: var(--primary);
+        transform: translateY(-5px);
+      }
+
+      .stat-value {
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-label {
+        color: var(--gray);
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* Content Section */
+      .content-section {
+        padding: 4rem 0;
+      }
+
+      .section-title {
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        font-weight: 800;
+        margin-bottom: 2rem;
+        letter-spacing: -1px;
+      }
+
+      .section-title span {
+        color: var(--primary);
+      }
+
+      .content-text {
+        color: var(--gray);
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+      }
+
+      /* Screenshot Carousel */
+      .carousel-container {
+        position: relative;
+        margin: 4rem 0;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2rem;
+        overflow: hidden;
+      }
+
+      .carousel-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16/9;
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--dark);
+      }
+
+      .carousel-slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .carousel-slide.active {
+        opacity: 1;
+      }
+
+      .screenshot-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 107, 53, 0.1),
+          rgba(0, 78, 137, 0.1)
+        );
+        border: 2px dashed rgba(255, 107, 53, 0.3);
+        border-radius: 8px;
+      }
+
+      .screenshot-placeholder-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      .screenshot-placeholder-text {
+        font-size: 1.2rem;
+        color: var(--gray);
+        text-align: center;
+        padding: 0 2rem;
+      }
+
+      .screenshot-item {
+        text-align: center;
+      }
+
+      .screenshot-img {
+        width: 100%;
+        max-height: 600px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+      }
+
+      .screenshot-caption {
+        font-size: 14px;
+        color: #555;
+      }
+
+      .carousel-controls {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .carousel-btn {
+        background: rgba(255, 107, 53, 0.1);
+        border: 1px solid var(--primary);
+        color: var(--primary);
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        font-family: "Syne", sans-serif;
+      }
+
+      .carousel-btn:hover {
+        background: var(--primary);
+        color: white;
+        transform: scale(1.05);
+      }
+
+      .carousel-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 107, 53, 0.3);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .indicator.active {
+        background: var(--primary);
+        width: 30px;
+        border-radius: 5px;
+      }
+
+      /* Features Grid */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
+        transition: all 0.3s;
+      }
+
+      .feature-card:hover {
+        border-color: var(--primary);
+        transform: translateY(-5px);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .feature-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        color: var(--light);
+      }
+
+      .feature-card p {
+        color: var(--gray);
+        line-height: 1.6;
+      }
+
+      /* Challenge & Solution */
+      .challenge-solution {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        margin: 3rem 0;
+      }
+
+      .challenge-box,
+      .solution-box {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 2.5rem;
+      }
+
+      .challenge-box {
+        border-left: 4px solid #e74c3c;
+      }
+
+      .solution-box {
+        border-left: 4px solid var(--success);
+      }
+
+      .challenge-box h3,
+      .solution-box h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .challenge-box h3 {
+        color: #e74c3c;
+      }
+
+      .solution-box h3 {
+        color: var(--success);
+      }
+
+      .challenge-box ul,
+      .solution-box ul {
+        list-style: none;
+        color: var(--gray);
+      }
+
+      .challenge-box li,
+      .solution-box li {
+        padding: 0.7rem 0;
+        padding-left: 1.5rem;
+        position: relative;
+        line-height: 1.6;
+      }
+
+      .challenge-box li::before {
+        content: "⚠️";
+        position: absolute;
+        left: 0;
+      }
+
+      .solution-box li::before {
+        content: "✅";
+        position: absolute;
+        left: 0;
+      }
+
+      /* Impact Section */
+      .impact-section {
+        background: rgba(255, 107, 53, 0.05);
+        border: 1px solid rgba(255, 107, 53, 0.2);
+        border-radius: 20px;
+        padding: 3rem;
+        margin: 4rem 0;
+      }
+
+      .impact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .impact-item {
+        text-align: center;
+      }
+
+      .impact-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+      }
+
+      .impact-description {
+        color: var(--gray);
+        font-size: 1rem;
+      }
+
+      /* CTA Section */
+      .cta-section {
+        text-align: center;
+        padding: 4rem 0;
+      }
+
+      .btn {
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: "Syne", sans-serif;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+      }
+
+      /* Footer */
+      footer {
+        padding: 3rem 0;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--gray);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .challenge-solution {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        .carousel-controls {
+          flex-direction: column;
+        }
+        .project-stats-section {
+          grid-template-columns: 1fr;
+        }
+        .carousel-wrapper {
+          aspect-ratio: 11 / 9;
+          border-radius: 5px;
+        }
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--darker);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+      <div class="bg-grid"></div>
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="container">
+      <a href="index.html" class="logo">&lt;DevLab/&gt;</a>
+      <a href="index.html#projects" class="back-btn"> ← Back to Projects </a>
+    </nav>
+
+    <!-- Project Hero -->
+    <section class="project-hero container">
+      <span class="project-status">● Live & Production Ready</span>
+      <h1>Talent Gate <span class="gradient-text">Case Study</span></h1>
+      <p>
+        A comprehensive end-to-end recruitment automation platform designed to
+        streamline the entire hiring process from candidate testing to final
+        onboarding. Features intelligent exam systems, automated evaluation
+        pipelines, and dynamic dashboard themes.
+      </p>
+
+      <div class="tech-stack">
+        <span class="tech-tag">React.js</span>
+        <span class="tech-tag">Node.js</span>
+        <span class="tech-tag">Express</span>
+        <span class="tech-tag">MySQL</span>
+        <span class="tech-tag">JWT Auth</span>
+        <span class="tech-tag">REST API</span>
+      </div>
+
+      <div class="project-stats-section">
+        <div class="stat-card">
+          <div class="stat-value">500+</div>
+          <div class="stat-label">Tests Conducted</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">80%</div>
+          <div class="stat-label">Time Reduction</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">95%</div>
+          <div class="stat-label">Accuracy Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">12+</div>
+          <div class="stat-label">Dashboard Themes</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section class="content-section container">
+      <h2 class="section-title"><span>Project</span> Overview</h2>
+      <p class="content-text">
+        Talent Gate is a full-stack recruitment automation platform built to
+        address the inefficiencies in traditional hiring processes. The system
+        provides a complete solution from job posting to candidate selection,
+        featuring an advanced examination system, automated scoring, real-time
+        analytics, and customizable dashboard themes for enhanced user
+        experience.
+      </p>
+      <p class="content-text">
+        The platform handles the entire candidate journey: application
+        submission, skill assessment through customizable exams, automated
+        evaluation with intelligent scoring algorithms, interview scheduling,
+        and final hiring decisions. The system also includes a sophisticated
+        theme engine allowing users to personalize their dashboard experience
+        with multiple preset themes and custom color schemes.
+      </p>
+    </section>
+
+    <!-- Screenshots Carousel -->
+    <section class="content-section container">
+      <h2 class="section-title"><span>Interface</span> Showcase</h2>
+
+      <div class="carousel-container">
+        <div class="carousel-wrapper">
+          <!-- Slide 1 -->
+          <div class="carousel-slide active">
+            <div class="screenshot-item">
+              <img
+                src="assets/images/talent-gate/dashboard-overview.png"
+                alt="Dashboard Overview Screenshot"
+                class="screenshot-img"
+              />
+              <div class="screenshot-caption">
+                <strong>Dashboard Overview</strong><br />
+                Main dashboard with real-time analytics, candidate pipeline, and
+                quick action cards. Supports multiple theme configurations.
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="carousel-slide">
+            <div class="screenshot-item">
+              <img
+                src="assets/images/talent-gate/Exam-builder-2.png"
+                alt="Exam Builder Interface Screenshot"
+                class="screenshot-img"
+              />
+              <div class="screenshot-caption">
+                <strong>Exam Builder Interface</strong><br />
+                Intuitive exam creation tool with question bank, timer settings,
+                and advanced configuration options.
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="carousel-slide">
+            <div class="screenshot-item">
+              <img
+                src="assets/images/talent-gate/candidate-management.png"
+                alt="Candidate Management Screenshot"
+                class="screenshot-img"
+              />
+              <div class="screenshot-caption">
+                <strong>Candidate Management</strong><br />
+                Comprehensive candidate profiles with test history, scores, and
+                automated evaluation results.
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 4
+          <div class="carousel-slide">
+            <div class="screenshot-item">
+              <img
+                src="assets/images/theme-customization.jpg"
+                alt="Theme Customization Screenshot"
+                class="screenshot-img"
+              />
+              <div class="screenshot-caption">
+                <strong>Theme Customization</strong><br />
+                Live theme switcher with 12+ preset themes and custom color
+                picker for personalized dashboard experience.
+              </div>
+            </div>
+          </div> -->
+
+          <!-- Slide 5 -->
+          <div class="carousel-slide">
+            <div class="screenshot-item">
+              <img
+                src="assets/images/talent-gate/question-creation.png"
+                alt="Question Creation Screenshot"
+                class="screenshot-img"
+              />
+              <div class="screenshot-caption">
+                <strong>Question Creation & Management</strong><br />
+                Create questions manually with multiple options, correct answer
+                selection, and difficulty levels. Supports bulk upload via XLSX
+                format with a predefined template for structured and efficient
+                question bank management.
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 6 -->
+          <div class="carousel-slide">
+            <div class="screenshot-item">
+              <img
+                src="assets/images/talent-gate/interview-schedule-screen.png"
+                alt="Interview Scheduled Screen Screenshot"
+                class="screenshot-img"
+              />
+              <div class="screenshot-caption">
+                <strong>Interview Scheduled Screen</strong><br />
+                Track interview schedules, candidate details, assigned
+                interviewers, and real-time status updates in one organized
+                interface.
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 7 -->
+          <div class="carousel-slide">
+            <div class="screenshot-item">
+              <img
+                src="assets/images/talent-gate/interview-schedule.png"
+                alt="Interview Scheduled Screen Screenshot"
+                class="screenshot-img"
+              />
+              <div class="screenshot-caption">
+                <strong>Schedule Interview Interface</strong><br />
+                Assign interviewers, select date and time, choose interview
+                mode, and send automated notifications — all from one
+                streamlined panel.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="carousel-controls">
+          <button class="carousel-btn" onclick="prevSlide()">← Previous</button>
+          <button class="carousel-btn" onclick="nextSlide()">Next →</button>
+        </div>
+
+        <!-- Indicators -->
+        <div class="carousel-indicators">
+          <div class="indicator active" onclick="goToSlide(0)"></div>
+          <div class="indicator" onclick="goToSlide(1)"></div>
+          <div class="indicator" onclick="goToSlide(2)"></div>
+          <!-- <div class="indicator" onclick="goToSlide(3)"></div> -->
+          <div class="indicator" onclick="goToSlide(4)"></div>
+          <div class="indicator" onclick="goToSlide(5)"></div>
+          <div class="indicator" onclick="goToSlide(6)"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="content-section container">
+      <h2 class="section-title"><span>Key</span> Features</h2>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Smart Exam System</h3>
+          <p>
+            Create custom exams with multiple question types, time limits, and
+            automatic anti-cheating measures. Supports MCQ, coding, and
+            descriptive questions.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>Automated Evaluation</h3>
+          <p>
+            Intelligent scoring algorithms instantly evaluate candidate
+            responses, generate detailed reports, and rank candidates based on
+            performance metrics.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Real-time Analytics</h3>
+          <p>
+            Comprehensive dashboards displaying hiring metrics, candidate
+            statistics, exam performance trends, and recruitment pipeline
+            visualization.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎨</div>
+          <h3>Dynamic Themes</h3>
+          <p>
+            Personalize your experience with 12+ preset themes or create custom
+            color schemes. Theme preferences persist across sessions.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3>Secure Authentication</h3>
+          <p>
+            Enterprise-grade security with JWT-based authentication, role-based
+            access control, and encrypted candidate data storage.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📧</div>
+          <h3>Automated Workflows</h3>
+          <p>
+            Email notifications, automatic interview scheduling, candidate
+            status updates, and customizable recruitment pipeline stages.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Challenge & Solution -->
+    <section class="content-section container">
+      <h2 class="section-title"><span>Challenges</span> & Solutions</h2>
+
+      <div class="challenge-solution">
+        <div class="challenge-box">
+          <h3>🎯 Challenges</h3>
+          <ul>
+            <li>
+              Manual screening of 100+ candidates consumed 40+ hours weekly
+            </li>
+            <li>
+              Inconsistent evaluation criteria led to biased hiring decisions
+            </li>
+            <li>
+              Paper-based tests were difficult to scale and prone to errors
+            </li>
+            <li>No centralized system to track candidate progress</li>
+            <li>Limited visibility into recruitment metrics and bottlenecks</li>
+            <li>Users needed customization options for better UX</li>
+          </ul>
+        </div>
+
+        <div class="solution-box">
+          <h3>💡 Solutions</h3>
+          <ul>
+            <li>Automated exam system reduced screening time by 80%</li>
+            <li>
+              Standardized evaluation criteria ensure fair, objective assessment
+            </li>
+            <li>
+              Digital exams with auto-grading support unlimited concurrent users
+            </li>
+            <li>Centralized dashboard provides real-time candidate tracking</li>
+            <li>
+              Analytics engine delivers actionable insights on hiring pipeline
+            </li>
+            <li>Dynamic theme system allows full UI customization</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Implementation -->
+    <section class="content-section container">
+      <h2 class="section-title"><span>Technical</span> Architecture</h2>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>Frontend Architecture</h3>
+          <p>
+            Built with React.js using functional components and hooks.
+            Implements Context API for state management, React Router for
+            navigation, and custom theme provider for dynamic styling. Fully
+            responsive design with mobile-first approach.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Backend Infrastructure</h3>
+          <p>
+            Node.js with Express framework handling RESTful API endpoints.
+            Implements middleware for authentication, validation, and error
+            handling. Features include job queues for async tasks and email
+            services.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Database Design</h3>
+          <p>
+            MySQL relational database with normalized schema design. Includes
+            optimized indexes for query performance, foreign key constraints for
+            data integrity, and stored procedures for complex operations.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Security Measures</h3>
+          <p>
+            JWT-based authentication with refresh token rotation. Password
+            hashing with bcrypt, SQL injection prevention, XSS protection, and
+            CORS configuration for secure API access.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Theme Engine</h3>
+          <p>
+            CSS custom properties (variables) for dynamic theming. React Context
+            provides theme state, localStorage for persistence, and smooth
+            transitions between theme changes without page reload.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Performance Optimization</h3>
+          <p>
+            Lazy loading for routes, code splitting for reduced bundle size,
+            debounced API calls, optimized database queries with proper
+            indexing, and client-side caching strategies.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="content-section container">
+      <div class="impact-section">
+        <h2 class="section-title"><span>Business</span> Impact</h2>
+
+        <div class="impact-grid">
+          <div class="impact-item">
+            <div class="impact-number">80%</div>
+            <div class="impact-description">Reduction in screening time</div>
+          </div>
+          <div class="impact-item">
+            <div class="impact-number">500+</div>
+            <div class="impact-description">Candidates assessed monthly</div>
+          </div>
+          <div class="impact-item">
+            <div class="impact-number">95%</div>
+            <div class="impact-description">Evaluation accuracy</div>
+          </div>
+          <div class="impact-item">
+            <div class="impact-number">100%</div>
+            <div class="impact-description">User satisfaction rate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lessons Learned -->
+    <section class="content-section container">
+      <h2 class="section-title"><span>Key</span> Learnings</h2>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>User-Centric Design</h3>
+          <p>
+            Implementing the theme system taught the importance of
+            personalization. User feedback shaped the feature set, resulting in
+            higher adoption rates and improved user satisfaction.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Scalable Architecture</h3>
+          <p>
+            Starting with a modular architecture paid dividends. As requirements
+            grew, adding features like the theme engine didn't require major
+            refactoring of the existing codebase.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Performance Matters</h3>
+          <p>
+            Optimizing database queries and implementing proper indexing was
+            crucial. Initial load times decreased by 60% after implementing lazy
+            loading and code splitting strategies.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section container">
+      <h2 class="section-title">
+        Interested in <span>Working Together?</span>
+      </h2>
+      <p
+        class="content-text"
+        style="text-align: center; max-width: 600px; margin: 0 auto 2rem"
+      >
+        I'm available for freelance projects and full-time opportunities. Let's
+        discuss how I can help solve your business challenges.
+      </p>
+      <a href="index.html#contact" class="btn btn-primary">Get In Touch</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="container">
+      <p>
+        &copy; 2025 Full Stack Developer Portfolio. Built with passion and code.
+      </p>
+    </footer>
+
+    <script>
+      let currentSlide = 0;
+      const slides = document.querySelectorAll(".carousel-slide");
+      const indicators = document.querySelectorAll(".indicator");
+
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          slide.classList.remove("active");
+          indicators[i].classList.remove("active");
+        });
+
+        slides[index].classList.add("active");
+        indicators[index].classList.add("active");
+        currentSlide = index;
+      }
+
+      function nextSlide() {
+        let next = (currentSlide + 1) % slides.length;
+        showSlide(next);
+      }
+
+      function prevSlide() {
+        let prev = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(prev);
+      }
+
+      function goToSlide(index) {
+        showSlide(index);
+      }
+
+      // Auto-advance slides every 5 seconds
+      setInterval(nextSlide, 5000);
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") prevSlide();
+        if (e.key === "ArrowRight") nextSlide();
+      });
+    </script>
+  </body>
+</html>

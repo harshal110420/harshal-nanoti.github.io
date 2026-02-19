@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asset Management System - Project Case Study</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #ff6b35; --secondary: #004e89; --accent: #f7b801;
+            --dark: #0a0e27; --darker: #050716; --light: #f5f5f5;
+            --gray: #8892b0; --warning: #f7b801;
+        }
+        body {
+            font-family: "Syne", sans-serif; background: var(--darker);
+            color: var(--light); overflow-x: hidden; line-height: 1.6;
+        }
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.15;
+        }
+        .bg-grid {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(255, 107, 53, 0.1) 1px, transparent 1px),
+                        linear-gradient(rgba(255, 107, 53, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px; animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(80px);
+            opacity: 0.6; animation: float 20s ease-in-out infinite;
+        }
+        .orb-1 { width: 400px; height: 400px; background: var(--primary); top: 10%; left: 10%; }
+        .orb-2 { width: 300px; height: 300px; background: var(--secondary); bottom: 20%; right: 10%; animation-delay: 5s; }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -50px) scale(1.1); }
+            66% { transform: translate(-50px, 100px) scale(0.9); }
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+        nav {
+            padding: 2rem 0; display: flex; justify-content: space-between;
+            align-items: center; animation: slideDown 0.8s ease-out;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .logo {
+            font-size: 1.5rem; font-weight: 800; color: var(--primary);
+            letter-spacing: -1px; text-decoration: none;
+        }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            color: var(--gray); text-decoration: none; font-weight: 600;
+            transition: all 0.3s; padding: 0.7rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;
+        }
+        .back-btn:hover {
+            color: var(--primary); border-color: var(--primary); transform: translateX(-5px);
+        }
+        .project-hero {
+            padding: 4rem 0 6rem; text-align: center; animation: fadeInUp 1s ease-out;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .project-status {
+            display: inline-block; padding: 0.5rem 1rem;
+            background: rgba(247, 184, 1, 0.2); color: var(--warning);
+            border: 1px solid var(--warning); border-radius: 30px;
+            font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem;
+        }
+        .project-hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800;
+            margin-bottom: 1.5rem; letter-spacing: -2px;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .project-hero p {
+            font-size: 1.2rem; color: var(--gray); max-width: 800px;
+            margin: 0 auto 2rem; line-height: 1.8;
+        }
+        .tech-stack {
+            display: flex; justify-content: center; flex-wrap: wrap;
+            gap: 1rem; margin-bottom: 3rem;
+        }
+        .tech-tag {
+            padding: 0.6rem 1.2rem; background: rgba(255, 107, 53, 0.1);
+            color: var(--primary); border: 1px solid var(--primary);
+            border-radius: 8px; font-size: 0.95rem;
+            font-family: "JetBrains Mono", monospace; font-weight: 500;
+        }
+        .project-stats-section {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem; margin: 4rem 0;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; padding: 2rem; text-align: center; transition: all 0.3s;
+        }
+        .stat-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .stat-value {
+            font-size: 3rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: var(--gray); font-size: 1rem;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .content-section { padding: 4rem 0; }
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 800;
+            margin-bottom: 2rem; letter-spacing: -1px;
+        }
+        .section-title span { color: var(--primary); }
+        .content-text {
+            color: var(--gray); font-size: 1.1rem;
+            line-height: 1.8; margin-bottom: 2rem;
+        }
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem; margin: 3rem 0;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; padding: 2rem; transition: all 0.3s;
+        }
+        .feature-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .feature-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--light); }
+        .feature-card p { color: var(--gray); line-height: 1.6; }
+        .progress-section {
+            background: rgba(247, 184, 1, 0.05); border: 1px solid rgba(247, 184, 1, 0.2);
+            border-radius: 20px; padding: 3rem; margin: 4rem 0;
+        }
+        .progress-item {
+            display: flex; align-items: center; gap: 2rem;
+            padding: 1.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .progress-item:last-child { border-bottom: none; }
+        .progress-icon {
+            font-size: 2rem; width: 60px; text-align: center;
+        }
+        .progress-content { flex: 1; }
+        .progress-content h4 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .progress-content p { color: var(--gray); font-size: 0.95rem; }
+        .progress-bar-container {
+            background: rgba(255, 255, 255, 0.05); border-radius: 10px;
+            height: 10px; overflow: hidden; margin-top: 0.5rem;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            height: 100%; border-radius: 10px; transition: width 0.3s;
+        }
+        .timeline {
+            position: relative; padding: 2rem 0; margin: 3rem 0;
+        }
+        .timeline::before {
+            content: ''; position: absolute; left: 30px; top: 0;
+            bottom: 0; width: 2px; background: rgba(255, 107, 53, 0.3);
+        }
+        .timeline-item {
+            position: relative; padding-left: 80px; margin-bottom: 3rem;
+        }
+        .timeline-icon {
+            position: absolute; left: 0; width: 60px; height: 60px;
+            background: rgba(255, 107, 53, 0.1); border: 2px solid var(--primary);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 1.5rem;
+        }
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px; padding: 1.5rem;
+        }
+        .timeline-date { color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+        .timeline-content h4 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .timeline-content p { color: var(--gray); line-height: 1.6; }
+        .btn {
+            padding: 1rem 2rem; border: none; border-radius: 8px;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease; text-decoration: none;
+            display: inline-block; font-family: "Syne", sans-serif;
+        }
+        .btn-primary {
+            background: var(--primary); color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px); box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+        .cta-section { text-align: center; padding: 4rem 0; }
+        footer {
+            padding: 3rem 0; text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1); color: var(--gray);
+        }
+        @media (max-width: 768px) {
+            .features-grid { grid-template-columns: 1fr; }
+            .project-stats-section { grid-template-columns: 1fr; }
+            .timeline-item { padding-left: 60px; }
+            .timeline::before { left: 20px; }
+        }
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--darker); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="bg-grid"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav class="container">
+        <a href="index.html" class="logo">&lt;DevLab/&gt;</a>
+        <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+    </nav>
+
+    <section class="project-hero container">
+        <span class="project-status">⚡ In Active Development</span>
+        <h1>Asset Management <span class="gradient-text">System</span></h1>
+        <p>
+            Enterprise-grade asset tracking and lifecycle management platform built to streamline 
+            inventory operations, automate maintenance schedules, and provide real-time visibility 
+            into organizational assets across multiple departments and locations.
+        </p>
+
+        <div class="tech-stack">
+            <span class="tech-tag">Next.js 14</span>
+            <span class="tech-tag">TypeScript</span>
+            <span class="tech-tag">PostgreSQL</span>
+            <span class="tech-tag">Prisma ORM</span>
+            <span class="tech-tag">TailwindCSS</span>
+            <span class="tech-tag">Shadcn UI</span>
+        </div>
+
+        <div class="project-stats-section">
+            <div class="stat-card">
+                <div class="stat-value">70%</div>
+                <div class="stat-label">Development Complete</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">5+</div>
+                <div class="stat-label">Core Modules</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Q2</div>
+                <div class="stat-label">2025 Launch</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Test Coverage Goal</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>Project</span> Overview</h2>
+        <p class="content-text">
+            The Asset Management System is designed to solve the critical challenge of tracking and 
+            managing physical and digital assets across large organizations. From procurement to 
+            disposal, the system handles the complete asset lifecycle with automated workflows, 
+            real-time tracking, maintenance scheduling, and comprehensive reporting.
+        </p>
+        <p class="content-text">
+            Built with modern technologies and scalability in mind, the platform supports multi-location 
+            asset tracking, barcode/QR code integration, automated depreciation calculations, maintenance 
+            reminders, and role-based access control for different organizational levels.
+        </p>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>Planned</span> Features</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Asset Tracking</h3>
+                <p>
+                    Comprehensive asset registry with barcode/QR code support, real-time location tracking, 
+                    detailed asset profiles, and automated status updates throughout the lifecycle.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Analytics Dashboard</h3>
+                <p>
+                    Interactive dashboards displaying asset utilization, depreciation trends, maintenance 
+                    costs, and procurement insights with exportable reports and custom visualizations.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>Maintenance Management</h3>
+                <p>
+                    Automated maintenance scheduling, service history tracking, vendor management, 
+                    and preventive maintenance alerts to minimize downtime and extend asset life.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Audit & Compliance</h3>
+                <p>
+                    Complete audit trails, compliance reporting, automated documentation, and 
+                    regulatory requirement tracking with tamper-proof historical records.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Role-Based Access</h3>
+                <p>
+                    Granular permission system supporting department-level, location-level, and 
+                    asset-category-level access control with approval workflows.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Mobile Support</h3>
+                <p>
+                    Responsive design with mobile-optimized views for field asset verification, 
+                    barcode scanning, and quick status updates on the go.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section container">
+        <div class="progress-section">
+            <h2 class="section-title"><span>Development</span> Progress</h2>
+            
+            <div class="progress-item">
+                <div class="progress-icon">✅</div>
+                <div class="progress-content">
+                    <h4>Database Schema & Architecture</h4>
+                    <p>Complete entity relationship design, Prisma schema implementation, and migration system setup</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-icon">✅</div>
+                <div class="progress-content">
+                    <h4>Authentication & Authorization</h4>
+                    <p>JWT-based auth, role-based access control, and secure session management</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-icon">🔄</div>
+                <div class="progress-content">
+                    <h4>Asset Management Core</h4>
+                    <p>CRUD operations, asset categorization, location management, and status tracking</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-icon">🔄</div>
+                <div class="progress-content">
+                    <h4>Dashboard & Analytics</h4>
+                    <p>Real-time metrics, interactive charts, and custom report generation</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 60%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-icon">⏳</div>
+                <div class="progress-content">
+                    <h4>Maintenance Module</h4>
+                    <p>Scheduling system, vendor integration, and service history tracking</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 40%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-item">
+                <div class="progress-icon">⏳</div>
+                <div class="progress-content">
+                    <h4>Reporting & Compliance</h4>
+                    <p>Audit logs, compliance reports, and automated documentation generation</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 30%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>Development</span> Timeline</h2>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-icon">✅</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">January 2025 - Completed</div>
+                    <h4>Phase 1: Foundation</h4>
+                    <p>
+                        Project setup, technology stack selection, database design, authentication system, 
+                        and core architecture implementation.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">🔄</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">February 2025 - In Progress</div>
+                    <h4>Phase 2: Core Features</h4>
+                    <p>
+                        Asset CRUD operations, location management, category system, bulk import/export, 
+                        and barcode generation functionality.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">⏳</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">March 2025 - Planned</div>
+                    <h4>Phase 3: Advanced Features</h4>
+                    <p>
+                        Dashboard analytics, maintenance scheduling, automated workflows, notification system, 
+                        and comprehensive reporting engine.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">⏳</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">April 2025 - Planned</div>
+                    <h4>Phase 4: Testing & Refinement</h4>
+                    <p>
+                        Comprehensive testing, performance optimization, security audits, user acceptance 
+                        testing, and bug fixes.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">🚀</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">May 2025 - Target</div>
+                    <h4>Phase 5: Production Launch</h4>
+                    <p>
+                        Final deployment, user training, documentation completion, and production monitoring setup.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>Technical</span> Highlights</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Modern Stack</h3>
+                <p>
+                    Built with Next.js 14 using app router, TypeScript for type safety, and Prisma ORM 
+                    for database management. Implements server components and streaming for optimal performance.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Database Optimization</h3>
+                <p>
+                    PostgreSQL with carefully designed indexes, query optimization, and connection pooling. 
+                    Prisma migrations ensure schema consistency across environments.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>UI/UX Excellence</h3>
+                <p>
+                    Shadcn UI components for consistent design language, Tailwind CSS for rapid styling, 
+                    and Radix UI primitives for accessible interactions.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section container">
+        <h2 class="section-title">Stay <span>Updated</span></h2>
+        <p class="content-text" style="text-align: center; max-width: 600px; margin: 0 auto 2rem;">
+            Interested in following the development progress or discussing potential collaboration? 
+            Let's connect!
+        </p>
+        <a href="index.html#contact" class="btn btn-primary">Get In Touch</a>
+    </section>
+
+    <footer class="container">
+        <p>&copy; 2025 Full Stack Developer Portfolio. Built with passion and code.</p>
+    </footer>
+</body>
+</html>

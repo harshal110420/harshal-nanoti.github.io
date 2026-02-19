@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Corporate Website - Project Case Study</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #ff6b35; --secondary: #004e89; --accent: #f7b801;
+            --dark: #0a0e27; --darker: #050716; --light: #f5f5f5;
+            --gray: #8892b0; --success: #4caf50;
+        }
+        body { font-family: "Syne", sans-serif; background: var(--darker); color: var(--light); overflow-x: hidden; line-height: 1.6; }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
+        .bg-grid {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(255, 107, 53, 0.1) 1px, transparent 1px),
+                        linear-gradient(rgba(255, 107, 53, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px; animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: float 20s ease-in-out infinite; }
+        .orb-1 { width: 400px; height: 400px; background: var(--primary); top: 10%; left: 10%; }
+        .orb-2 { width: 300px; height: 300px; background: var(--secondary); bottom: 20%; right: 10%; animation-delay: 5s; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(100px, -50px) scale(1.1); } 66% { transform: translate(-50px, 100px) scale(0.9); } }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+        nav { padding: 2rem 0; display: flex; justify-content: space-between; align-items: center; animation: slideDown 0.8s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: -1px; text-decoration: none; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem; color: var(--gray); text-decoration: none;
+            font-weight: 600; transition: all 0.3s; padding: 0.7rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;
+        }
+        .back-btn:hover { color: var(--primary); border-color: var(--primary); transform: translateX(-5px); }
+        .project-hero { padding: 4rem 0 6rem; text-align: center; animation: fadeInUp 1s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .project-status {
+            display: inline-block; padding: 0.5rem 1rem; background: rgba(76, 175, 80, 0.2);
+            color: var(--success); border: 1px solid var(--success); border-radius: 30px;
+            font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem;
+        }
+        .project-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; margin-bottom: 1.5rem; letter-spacing: -2px; }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .project-hero p { font-size: 1.2rem; color: var(--gray); max-width: 800px; margin: 0 auto 2rem; line-height: 1.8; }
+        .tech-stack { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
+        .tech-tag {
+            padding: 0.6rem 1.2rem; background: rgba(255, 107, 53, 0.1); color: var(--primary);
+            border: 1px solid var(--primary); border-radius: 8px; font-size: 0.95rem;
+            font-family: "JetBrains Mono", monospace; font-weight: 500;
+        }
+        .project-stats-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 4rem 0; }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; padding: 2rem; text-align: center; transition: all 0.3s;
+        }
+        .stat-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .stat-value {
+            font-size: 3rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.5rem;
+        }
+        .stat-label { color: var(--gray); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .content-section { padding: 4rem 0; }
+        .section-title { font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 2rem; letter-spacing: -1px; }
+        .section-title span { color: var(--primary); }
+        .content-text { color: var(--gray); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0; }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; padding: 2rem; transition: all 0.3s;
+        }
+        .feature-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .feature-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--light); }
+        .feature-card p { color: var(--gray); line-height: 1.6; }
+        .btn {
+            padding: 1rem 2rem; border: none; border-radius: 8px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+            text-decoration: none; display: inline-block; font-family: "Syne", sans-serif;
+        }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4); }
+        .cta-section { text-align: center; padding: 4rem 0; }
+        footer { padding: 3rem 0; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); color: var(--gray); }
+        @media (max-width: 768px) { .features-grid, .project-stats-section { grid-template-columns: 1fr; } }
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--darker); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"><div class="bg-grid"></div><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+    <nav class="container">
+        <a href="index.html" class="logo">&lt;DevLab/&gt;</a>
+        <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+    </nav>
+
+    <section class="project-hero container">
+        <span class="project-status">● Live & Deployed</span>
+        <h1>Corporate <span class="gradient-text">Website</span></h1>
+        <p>
+            A modern, high-performance corporate website showcasing company portfolio, services, team, 
+            and achievements. Built with a focus on performance, SEO, and engaging user experience 
+            through smooth animations and responsive design.
+        </p>
+        <div class="tech-stack">
+            <span class="tech-tag">React.js</span>
+            <span class="tech-tag">Tailwind CSS</span>
+            <span class="tech-tag">Framer Motion</span>
+            <span class="tech-tag">React Router</span>
+            <span class="tech-tag">SEO Optimized</span>
+        </div>
+        <div class="project-stats-section">
+            <div class="stat-card"><div class="stat-value">95+</div><div class="stat-label">Performance Score</div></div>
+            <div class="stat-card"><div class="stat-value">100%</div><div class="stat-label">Responsive</div></div>
+            <div class="stat-card"><div class="stat-value">< 2s</div><div class="stat-label">Load Time</div></div>
+            <div class="stat-card"><div class="stat-value">8+</div><div class="stat-label">Sections</div></div>
+        </div>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>Project</span> Overview</h2>
+        <p class="content-text">
+            Developed a professional corporate website to establish strong online presence and showcase 
+            the company's capabilities. The site features modern design aesthetics, smooth animations, 
+            and optimized performance to deliver an excellent user experience across all devices.
+        </p>
+        <p class="content-text">
+            The website includes comprehensive sections for services, portfolio, team profiles, client 
+            testimonials, and contact forms. Built with React for component reusability and Framer Motion 
+            for fluid animations that enhance user engagement without compromising performance.
+        </p>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>Key</span> Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Performance Optimized</h3>
+                <p>Lazy loading, code splitting, image optimization, and CDN delivery achieving sub-2-second load times and 95+ Lighthouse scores.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Fully Responsive</h3>
+                <p>Mobile-first design approach ensuring perfect rendering across all screen sizes, from smartphones to large desktop monitors.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Engaging Animations</h3>
+                <p>Smooth page transitions, scroll-triggered animations, and micro-interactions using Framer Motion for delightful user experience.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>SEO Excellence</h3>
+                <p>Semantic HTML, meta tags, structured data, sitemap generation, and optimized content for high search engine rankings.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📧</div>
+                <h3>Contact Forms</h3>
+                <p>Integrated contact forms with validation, spam protection, and email notifications for immediate client communication.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Modern Tech Stack</h3>
+                <p>Built with React, Tailwind CSS for rapid styling, and Vite for lightning-fast development and build times.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section container">
+        <h2 class="section-title"><span>Website</span> Sections</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Hero Section</h3>
+                <p>Impactful first impression with compelling headlines, animated CTAs, and professional visuals showcasing brand identity.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Services Showcase</h3>
+                <p>Detailed service descriptions with icons, hover effects, and clear value propositions for each offering.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Portfolio Gallery</h3>
+                <p>Interactive project gallery with filtering, lightbox views, and case study links demonstrating past work.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Team Profiles</h3>
+                <p>Professional team member cards with photos, roles, bios, and social links building trust and transparency.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Client Testimonials</h3>
+                <p>Carousel of client reviews with ratings, photos, and company logos enhancing credibility.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Contact & Footer</h3>
+                <p>Multi-channel contact options including form, email, phone, and social media with integrated map location.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section container">
+        <h2 class="section-title">Need a <span>Professional Website?</span></h2>
+        <p class="content-text" style="text-align: center; max-width: 600px; margin: 0 auto 2rem;">
+            Let's create a stunning online presence for your business that converts visitors into customers.
+        </p>
+        <a href="index.html#contact" class="btn btn-primary">Start Your Project</a>
+    </section>
+
+    <footer class="container">
+        <p>&copy; 2025 Full Stack Developer Portfolio. Built with passion and code.</p>
+    </footer>
+</body>
+</html>
